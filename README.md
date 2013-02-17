@@ -1,6 +1,6 @@
 # Snow PHP MVC Framework
 
-*Snow* was developed as a extremely lightweight, flexible, and extensible MVC framework for PHP to be used it very restrictive environments
+*Snow* was developed as an extremely lightweight, flexible, and extensible MVC framework for PHP to be used it very restrictive environments
 
 It has no dependencies outside of PHP itself and works great with Oracle (unlike many PHP frameworks)
 

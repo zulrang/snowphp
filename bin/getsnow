@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# clone snow into base directory
+hg clone $SNOW_DIR snow
+
+# create required subdirectories
+mkdir public logs view controller config lib model
+
+# switch to public dir
+cd public
+
+# create symbolic links to base snow files
+ln -s ../snow/public/* ./
+ln -s ../snow/public/.htaccess ./
+

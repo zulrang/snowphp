@@ -1,0 +1,6 @@
+syntax: glob
+
+view/*
+controller/*
+model/*
+

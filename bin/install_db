@@ -1,0 +1,64 @@
+#!/tools/webapps/local/bin/php
+<?php
+
+define("BASE_DIR", realpath(dirname(dirname(dirname(__FILE__) . '../'))));
+define("CONFIG_DIR", BASE_DIR.DIRECTORY_SEPARATOR.'config/');
+
+$usage = "
+usage: install_db [environment]
+	
+Initializes a database at the baseline (version 1.0.0000) and 
+enabling migration.
+	
+ environment  (default 'dev') dev, test, or prod.  
+              Uses the config/database ini file specific to the environment. 
+              ie. config/database.development.ini
+			  			  
+";
+
+if(!empty($argv[1]) && $argv[1] == 'help') {
+	echo $usage;
+	exit;
+}
+
+if(empty($argv[1])) {
+	$environment = '';
+} else {
+	$environment = $argv[1];
+}
+
+switch ($environment) {
+	case 'prod':
+	case 'dev':
+	case 'test':
+		break;
+	default: 
+		echo "Defaulting to DEVELOPMENT database configuration\n";
+		$environment = 'dev';
+}
+
+$ini_file = 'config/database.'.$environment.'.ini';
+$ini_filename = BASE_DIR.DIRECTORY_SEPARATOR.$ini_file;
+
+if(!file_exists($ini_filename)) {
+	echo "$ini_filename not found!\n";
+	exit;
+}
+
+echo "Using $ini_file for database configuration details.\n";
+
+$new_ini_filename = preg_replace("/\.".$environment."/", '', $ini_filename);
+
+if(file_exists($new_ini_filename)) {
+	echo "config/database.ini already exists!\n";
+	exit;
+}
+
+copy($ini_filename, $new_ini_filename);
+echo "`config/database.$environment.ini' -> `config/database.ini'\n";
+
+include('snow/lib/db.php');
+
+$db = db();
+echo 'Connected to '.$db->instance_name."\n";
+
